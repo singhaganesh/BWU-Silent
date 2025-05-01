@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hostel Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="C:\Users\mrinm\OneDrive\Desktop\BWUSilent\css\style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <img src="C:\Users\mrinm\OneDrive\Desktop\BWUSilent\assets\images.png" alt="University Logo" style="width: 120px; height: auto;" />
+      </div>
+      <ul>
+        <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+        <li><a href="attendance.html"><i class="fas fa-calendar-check"></i><span>Attendance</span></a></li>
+        <li class="active"><a href="hostel.html"><i class="fas fa-bed"></i><span>Hostel</span></a></li>
+        <li><a href="canteen.html"><i class="fas fa-utensils"></i><span>Canteen</span></a></li>
+        <li><a href="libraries.html"><i class="fas fa-book"></i><span>Library</span></a></li>
+        <li><a href="change-password.html"><i class="fas fa-cog"></i><span>Change Password</span></a></li>
+        <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="header">
+        <h1>Hostel Management</h1>
+        <div class="profile">
+          <span>Student ID: 2025XYZ</span>
+          <img src="https://ui-avatars.com/api/?name=Mrinmoy&background=3498db&color=fff" alt="Profile" />
+      </header>
+
+      <section class="dashboard">
+        <!-- Complaint Form -->
+        <div class="card">
+          <h3>Submit Complaint</h3>
+          <form id="complaint-form" style="max-width: 400px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4; font-family: Arial, sans-serif;">
+            <label for="room" style="font-weight: bold; display: block; margin-bottom: 5px;">Room Number:</label>
+            <input type="text" id="room" name="room" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+          
+            <label for="type" style="font-weight: bold; display: block; margin-bottom: 5px;">Issue Type:</label>
+            <select id="type" name="type" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+              <option>Electricity</option>
+              <option>Water Supply</option>
+              <option>Furniture</option>
+              <option>Cleaning</option>
+              <option>Other</option>
+            </select>
+          
+            <label for="desc" style="font-weight: bold; display: block; margin-bottom: 5px;">Description:</label>
+            <textarea id="desc" name="desc" rows="3" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"></textarea>
+          
+            <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+          </form>
+          
+        </div>
+
+        <!-- Complaint Status Preview -->
+        <div class="card">
+          <h3>My Complaints</h3>
+          <ul>
+            <li>Room 203 - Water issue - <strong>Resolved</strong></li>
+            <li>Room 102 - Fan not working - <strong>Pending</strong></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Optional JS for form (placeholder functionality) -->
+  <script>
+    document.getElementById('complaint-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Complaint submitted successfully!');
+      this.reset();
+    });
+  </script>
+  <!-- Footer -->
+<footer style="background-color: #222;color: #fff;text-align: center;padding: 20px 0;font-size: 14px;">
+  <p>&copy; 2025 UniPortal. All rights reserved. Developed by Team Silent (BWU)</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Study Materials</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="C:\Users\mrinm\OneDrive\Desktop\BWUSilent\css\style.css" />
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+        <div style="text-align: center;">
+            <img src="C:\Users\mrinm\OneDrive\Desktop\BWUSilent\assets\images.png" alt="University Logo" style="width: 120px; height: auto;"/>
+          </div>
+          <ul>
+            <li><a href="faculty-dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li><a href="manage-classes.html"><i class="fas fa-chalkboard-teacher"></i><span>Manage Classes</span></a></li>
+            <li><a href="mark-attendance.html"><i class="fas fa-calendar-check"></i><span>Mark Attendance</span></a></li>
+            <li><a href="student-performance.html"><i class="fas fa-chart-bar"></i><span>Student Details</span></a></li>
+            <li class="active"><a href="upload-materials.html"><i class="fas fa-upload"></i><span>Upload Materials</span></a></li>
+            <li><a href="change-password.html"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+            <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+          </ul>
+    </nav>
+    <main class="main">
+      <header class="header"><h1>Upload Materials</h1>
+        <div class="profile">
+            <span>Faculty ID: FAC12345</span>
+            <img src="https://ui-avatars.com/api/?name=Anil+Kumar&background=3498db&color=fff" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%;">
+        </div>
+    </header>
+      <section class="dashboard" style="padding: 30px;">
+        <form style="max-width: 400px; margin: 30px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f8f8f8; font-family: Arial, sans-serif;">
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Select Subject:</label>
+            <select style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 20px; box-sizing: border-box;">
+              <option>MCA - AI</option>
+            </select>
+          
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Upload File:</label>
+            <input type="file" style="margin-bottom: 20px; display: block;"/>
+          
+            <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Upload</button>
+          </form>          
+      </section>
+    </main>
+  </div>
+</body>
+</html>

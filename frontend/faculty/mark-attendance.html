@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Management | Faculty Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --success-color: #2ecc71;
+      --warning-color: #f39c12;
+      --danger-color: #e74c3c;
+      --light-gray: #f8f9fa;
+      --dark-gray: #343a40;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      transition: all 0.3s;
+    }
+
+    .sidebar-header {
+      text-align: center;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-header img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 20px 0;
+    }
+
+    .sidebar li a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: all 0.3s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .sidebar li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar li.active a {
+      background-color: rgba(52, 152, 219, 0.2);
+      color: white;
+      border-left: 3px solid var(--primary-color);
+    }
+
+    /* Main Content Styles */
+    .main {
+      margin-left: 250px;
+      flex: 1;
+      padding: 30px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .header h1 {
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-profile .notification {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .user-profile .notification .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--danger-color);
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Dashboard Styles */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--box-shadow);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-header h2 {
+      color: var(--secondary-color);
+      font-size: 1.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-success {
+      background-color: var(--success-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #27ae60;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    /* Attendance Form Styles */
+    .attendance-controls {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--secondary-color);
+    }
+
+    .form-group select, 
+    .form-group input {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 0.9rem;
+      background-color: white;
+    }
+
+    .attendance-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .attendance-table th, 
+    .attendance-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .attendance-table th {
+      background-color: var(--light-gray);
+      font-weight: 600;
+      color: var(--secondary-color);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .attendance-table tr:hover {
+      background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    .attendance-status {
+      display: flex;
+      gap: 10px;
+    }
+
+    .status-btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background-color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .status-btn.active {
+      background-color: var(--success-color);
+      color: white;
+      border-color: var(--success-color);
+    }
+
+    .status-btn.absent {
+      background-color: var(--danger-color);
+      color: white;
+      border-color: var(--danger-color);
+    }
+
+    .status-btn.late {
+      background-color: var(--warning-color);
+      color: white;
+      border-color: var(--warning-color);
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+
+    .summary-card h3 {
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .summary-card .value {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .summary-card .present {
+      color: var(--success-color);
+    }
+
+    .summary-card .absent {
+      color: var(--danger-color);
+    }
+
+    .summary-card .late {
+      color: var(--warning-color);
+    }
+
+    .summary-card .total {
+      color: var(--primary-color);
+    }
+
+    /* Calendar Styles */
+    .calendar-container {
+      margin-bottom: 25px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .calendar-nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .calendar-day-header {
+      text-align: center;
+      padding: 10px;
+      font-weight: 600;
+      color: var(--secondary-color);
+      background-color: var(--light-gray);
+      border-radius: 4px;
+    }
+
+    .calendar-day {
+      height: 60px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .calendar-day:hover {
+      background-color: #f5f5f5;
+    }
+
+    .calendar-day.empty {
+      background-color: #f9f9f9;
+      border: none;
+    }
+
+    .calendar-day.current {
+      background-color: rgba(52, 152, 219, 0.1);
+      border-color: var(--primary-color);
+    }
+
+    .calendar-day.today {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .calendar-day .date {
+      font-weight: 600;
+      margin-bottom: auto;
+    }
+
+    .calendar-day .attendance-indicator {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      margin-top: 5px;
+    }
+
+    .calendar-day .present-indicator {
+      background-color: var(--success-color);
+    }
+
+    .calendar-day .absent-indicator {
+      background-color: var(--danger-color);
+    }
+
+    .calendar-day .late-indicator {
+      background-color: var(--warning-color);
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+      .sidebar {
+        width: 80px;
+        overflow: hidden;
+      }
+      .sidebar-header img {
+        width: 50px;
+      }
+      .sidebar li a span {
+        display: none;
+      }
+      .sidebar li a i {
+        margin-right: 0;
+        font-size: 1.2rem;
+      }
+      .main {
+        margin-left: 80px;
+      }
+      .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .attendance-controls {
+        flex-direction: column;
+      }
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <img src="C:\Users\mrinm\OneDrive\Desktop\BWUSilent\assets\images.png" alt="University Logo">
+      </div>
+      <ul>
+        <li><a href="faculty-dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+        <li><a href="manage-classes.html"><i class="fas fa-chalkboard-teacher"></i><span>My Classes</span></a></li>
+        <li class="active"><a href="mark-attendance.html"><i class="fas fa-check-circle"></i><span>Attendance</span></a></li>
+        <li><a href="student-performance.html"><i class="fas fa-chart-bar"></i><span>Student Details</span></a></li>
+        <li><a href="upload-materials.html"><i class="fas fa-upload"></i><span>Upload Materials</span></a></li>
+        <li><a href="change-password.html"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+        <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="header">
+        <h1>Attendance Management</h1>
+        <div class="user-profile">
+          <div class="notification">
+            <i class="fas fa-bell" style="font-size: 1.2rem;"></i>
+            <span class="badge">3</span>
+          </div>
+          <img src="https://ui-avatars.com/api/?name=Anil+Kumar&background=3498db&color=fff" alt="Profile">
+        </div>
+      </header>
+
+      <section class="dashboard">
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card">
+            <h3>Today's Attendance</h3>
+            <div class="value present">87%</div>
+            <div>Present: 26/30</div>
+          </div>
+          <div class="summary-card">
+            <h3>Monthly Average</h3>
+            <div class="value">92%</div>
+            <div>Last Month: 89%</div>
+          </div>
+          <div class="summary-card">
+            <h3>Absent Today</h3>
+            <div class="value absent">3</div>
+            <div>Late: 1</div>
+          </div>
+          <div class="summary-card">
+            <h3>Total Students</h3>
+            <div class="value total">30</div>
+            <div>Section: B</div>
+          </div>
+        </div>
+
+        <!-- Calendar View -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Attendance Calendar</h2>
+            <div class="action-buttons">
+              <button class="btn btn-outline">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <span style="font-weight: 500;">May 2024</span>
+              <button class="btn btn-outline">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="calendar-container">
+            <div class="calendar-grid">
+              <div class="calendar-day-header">Sun</div>
+              <div class="calendar-day-header">Mon</div>
+              <div class="calendar-day-header">Tue</div>
+              <div class="calendar-day-header">Wed</div>
+              <div class="calendar-day-header">Thu</div>
+              <div class="calendar-day-header">Fri</div>
+              <div class="calendar-day-header">Sat</div>
+              
+              <div class="calendar-day empty"></div>
+              <div class="calendar-day empty"></div>
+              <div class="calendar-day">
+                <div class="date">1</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">2</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">3</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">4</div>
+                <div class="attendance-indicator late-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">5</div>
+                <div class="attendance-indicator absent-indicator"></div>
+              </div>
+              
+              <div class="calendar-day">
+                <div class="date">6</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">7</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">8</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">9</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">10</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">11</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">12</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              
+              <div class="calendar-day">
+                <div class="date">13</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">14</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">15</div>
+                <div class="attendance-indicator present-indicator"></div>
+              </div>
+              <div class="calendar-day current">
+                <div class="date">16</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">17</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">18</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">19</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              
+              <div class="calendar-day">
+                <div class="date">20</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">21</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">22</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">23</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">24</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">25</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">26</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              
+              <div class="calendar-day">
+                <div class="date">27</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">28</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day today">
+                <div class="date">29</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">30</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day">
+                <div class="date">31</div>
+                <div class="attendance-indicator"></div>
+              </div>
+              <div class="calendar-day empty"></div>
+              <div class="calendar-day empty"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attendance Form -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Mark Today's Attendance</h2>
+            <div class="action-buttons">
+              <button class="btn btn-outline">
+                <i class="fas fa-download"></i> Export
+              </button>
+              <button class="btn btn-success">
+                <i class="fas fa-save"></i> Save
+              </button>
+            </div>
+          </div>
+
+          <div class="attendance-controls">
+            <div class="form-group">
+              <label for="class-select">Select Class</label>
+              <select id="class-select">
+                <option value="">-- Select Class --</option>
+                <option value="mca-2b" selected>MCA Sem 2 - Section B</option>
+                <option value="mba-1a">MBA Sem 1 - Section A</option>
+                <option value="btech-3c">B.Tech Sem 3 - Section C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date-select">Date</label>
+              <input type="date" id="date-select" value="2024-05-16">
+            </div>
+            <div class="form-group">
+              <label for="session-select">Session</label>
+              <select id="session-select">
+                <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
+                <option value="afternoon">Afternoon (1:00 PM - 4:00 PM)</option>
+                <option value="full">Full Day</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="attendance-table">
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>22010301269</td>
+                  <td>John Doe</td>
+                  <td>
+                    <div class="attendance-status">
+                      <button class="status-btn active">Present</button>
+                      <button class="status-btn absent">Absent</button>
+                      <button class="status-btn late">Late</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" placeholder="Optional remarks" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                  </td>
+                </tr>
+                <tr>
+                  <td>22010301270</td>
+                  <td>Jane Smith</td>
+                  <td>
+                    <div class="attendance-status">
+                      <button class="status-btn active">Present</button>
+                      <button class="status-btn absent">Absent</button>
+                      <button class="status-btn late">Late</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" placeholder="Optional remarks" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                  </td>
+                </tr>
+                <tr>
+                  <td>22010301271</td>
+                  <td>Robert Johnson</td>
+                  <td>
+                    <div class="attendance-status">
+                      <button class="status-btn">Present</button>
+                      <button class="status-btn absent active">Absent</button>
+                      <button class="status-btn late">Late</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" placeholder="Sick leave" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                  </td>
+                </tr>
+                <tr>
+                  <td>22010301272</td>
+                  <td>Emily Davis</td>
+                  <td>
+                    <div class="attendance-status">
+                      <button class="status-btn">Present</button>
+                      <button class="status-btn absent">Absent</button>
+                      <button class="status-btn late active">Late</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" placeholder="Arrived at 9:15 AM" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                  </td>
+                </tr>
+                <tr>
+                  <td>22010301273</td>
+                  <td>Michael Wilson</td>
+                  <td>
+                    <div class="attendance-status">
+                      <button class="status-btn active">Present</button>
+                      <button class="status-btn absent">Absent</button>
+                      <button class="status-btn late">Late</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" placeholder="Optional remarks" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Set today's date as default
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date-select').value = today;
+      
+      // Add click event to status buttons
+      document.querySelectorAll('.status-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons in this group
+          this.parentNode.querySelectorAll('.status-btn').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          // Add active class to clicked button
+          this.classList.add('active');
+        });
+      });
+      
+      // Calendar navigation
+      document.querySelectorAll('.calendar-nav button').forEach(button => {
+        button.addEventListener('click', function() {
+          // In a real app, this would update the calendar view
+          console.log('Calendar navigation clicked');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
