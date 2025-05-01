@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Student Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+          background-color: #f5f5f5;
+        }
+
+        .container {
+          display: flex;
+          min-height: 100vh;
+        }
+
+        .sidebar {
+          width: 250px;
+          background-color: #222;
+          color: white;
+          padding: 20px 0;
+          height: 100vh;
+          position: fixed;
+        }
+
+        .sidebar ul {
+          list-style: none;
+        }
+
+        .sidebar li a {
+          display: flex;
+          align-items: center;
+          padding: 15px 20px;
+          color: white;
+          text-decoration: none;
+          transition: background-color 0.3s;
+        }
+
+        .sidebar li a:hover {
+          background-color: #444;
+        }
+
+        .sidebar li a i {
+          margin-right: 10px;
+        }
+
+        .sidebar li.active a {
+          background-color: #3498db;
+        }
+
+        .main {
+          margin-left: 250px;
+          flex: 1;
+          padding: 20px;
+        }
+
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 0;
+          border-bottom: 1px solid #ddd;
+          margin-bottom: 20px;
+        }
+
+        .profile {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .profile img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+
+        .dashboard {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+
+        .card {
+          background-color: white;
+          border-radius: 8px;
+          padding: 20px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+          margin-bottom: 15px;
+          color: #333;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 15px;
+        }
+
+        th, td {
+          padding: 12px 15px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        th {
+          background-color: #f8f9fa;
+          font-weight: 600;
+        }
+
+        tr:hover {
+          background-color: #f5f5f5;
+        }
+
+        .form-group {
+          margin-bottom: 15px;
+        }
+
+        .form-group label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+
+        button {
+          background-color: #3498db;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+
+        button:hover {
+          background-color: #2980b9;
+        }
+
+        .btn-danger {
+          background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+          background-color: #c0392b;
+        }
+
+        .btn-success {
+          background-color: #2ecc71;
+        }
+
+        .btn-success:hover {
+          background-color: #27ae60;
+        }
+
+        footer {
+          background-color: #222;
+          color: #fff;
+          text-align: center;
+          padding: 20px 0;
+          margin-top: 20px;
+          font-size: 14px;
+        }
+
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 50%;
+          border-radius: 8px;
+        }
+
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .close:hover {
+          color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <img src="assets/images.png" alt="University Logo" style="width: 120px; height: auto;" />
+        </div>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li><a href="attendance.html"><i class="fas fa-calendar-check"></i><span>Attendance</span></a></li>
+            <li><a href="hostel.html"><i class="fas fa-bed"></i><span>Hostel</span></a></li>
+            <li><a href="canteen.html"><i class="fas fa-utensils"></i><span>Canteen</span></a></li>
+            <li class="active"><a href="student-library.html"><i class="fas fa-book"></i><span>Library</span></a></li>
+            <li><a href="change-password.html"><i class="fas fa-cog"></i><span>Change Password</span></a></li>
+            <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <header class="header">
+            <h1>Library Dashboard</h1>
+            <div class="profile">
+                <span>Student ID: 2025XYZ</span>
+                <img src="https://ui-avatars.com/api/?name=Student&background=3498db&color=fff" alt="Profile" />
+            </div>
+        </header>
+
+        <section class="dashboard">
+            <!-- Issued Books -->
+            <div class="card">
+                <h3>Your Issued Books</h3>
+                <table id="issued-books-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="issued-books-list">
+                    <!-- Issued books will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Available Books -->
+            <div class="card">
+                <h3>Available Books</h3>
+                <div class="form-group">
+                    <input type="text" id="search-available-books" placeholder="Search available books..." oninput="searchAvailableBooks()">
+                </div>
+                <table id="available-books-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="available-books-list">
+                    <!-- Available books will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Borrow Book Modal -->
+<div id="borrowModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Borrow Book</h3>
+        <div class="form-group">
+            <label for="due-date">Due Date</label>
+            <input type="date" id="due-date">
+        </div>
+        <button id="confirm-borrow-btn" class="btn-success">Confirm Borrow</button>
+        <div id="borrow-message" style="margin-top: 10px;"></div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 UniPortal. All rights reserved. Developed by Team Silent (BWU)</p>
+</footer>
+
+<script>
+    let currentBookId = null;
+    const studentId = "2025XYZ"; // This should be dynamically set based on logged in student
+
+    // Load books when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadAvailableBooks();
+      loadIssuedBooks();
+    });
+
+    // Modal close button
+    document.querySelector('.close').addEventListener('click', function() {
+      document.getElementById('borrowModal').style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+      if (event.target == document.getElementById('borrowModal')) {
+        document.getElementById('borrowModal').style.display = 'none';
+      }
+    });
+
+    // Function to load available books
+    function loadAvailableBooks() {
+      fetch('/api/library/available')
+        .then(response => response.json())
+        .then(books => {
+          const availableBooksList = document.getElementById('available-books-list');
+          availableBooksList.innerHTML = '';
+
+          books.filter(book => book.available).forEach(book => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${book.title}</td>
+              <td>${book.author}</td>
+              <td>
+                <button class="btn-success" onclick="openBorrowModal(${book.id})">Borrow</button>
+              </td>
+            `;
+            availableBooksList.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error loading available books:', error);
+        });
+    }
+
+    // Function to load issued books for this student
+    function loadIssuedBooks() {
+      fetch('/api/library/available')
+        .then(response => response.json())
+        .then(books => {
+          const issuedBooksList = document.getElementById('issued-books-list');
+          issuedBooksList.innerHTML = '';
+
+          books.filter(book => !book.available && book.borrowedBy === studentId).forEach(book => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${book.title}</td>
+              <td>${book.author}</td>
+              <td>${book.dueDate}</td>
+              <td>
+                <button class="btn-danger" onclick="returnBook(${book.id})">Return</button>
+              </td>
+            `;
+            issuedBooksList.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error loading issued books:', error);
+        });
+    }
+
+    // Function to open borrow modal
+    function openBorrowModal(bookId) {
+      currentBookId = bookId;
+      document.getElementById('borrowModal').style.display = 'block';
+      document.getElementById('borrow-message').textContent = '';
+    }
+
+    // Function to confirm borrow
+    document.getElementById('confirm-borrow-btn').addEventListener('click', function() {
+      const dueDate = document.getElementById('due-date').value;
+
+      if (!dueDate) {
+        document.getElementById('borrow-message').textContent = 'Please select a due date';
+        document.getElementById('borrow-message').style.color = 'red';
+        return;
+      }
+
+      fetch(`/api/library/borrow/${currentBookId}?borrower=${studentId}&dueDate=${dueDate}`, {
+        method: 'PUT'
+      })
+      .then(response => response.json())
+      .then(book => {
+        document.getElementById('borrow-message').textContent = 'Book borrowed successfully!';
+        document.getElementById('borrow-message').style.color = 'green';
+        setTimeout(() => {
+          document.getElementById('borrowModal').style.display = 'none';
+          loadAvailableBooks();
+          loadIssuedBooks();
+        }, 1500);
+      })
+      .catch(error => {
+        document.getElementById('borrow-message').textContent = 'Error borrowing book';
+        document.getElementById('borrow-message').style.color = 'red';
+        console.error('Error:', error);
+      });
+    });
+
+    // Function to return a book
+    function returnBook(bookId) {
+      if (confirm('Are you sure you want to return this book?')) {
+        fetch(`/api/library/return/${bookId}`, {
+          method: 'PUT'
+        })
+        .then(response => response.json())
+        .then(book => {
+          alert('Book returned successfully!');
+          loadAvailableBooks();
+          loadIssuedBooks();
+        })
+        .catch(error => {
+          alert('Error returning book');
+          console.error('Error:', error);
+        });
+      }
+    }
+
+    // Function to search available books
+    function searchAvailableBooks() {
+      const searchTerm = document.getElementById('search-available-books').value.toLowerCase();
+      const rows = document.getElementById('available-books-list').getElementsByTagName('tr');
+
+      for (let row of rows) {
+        const title = row.cells[0].textContent.toLowerCase();
+        const author = row.cells[1].textContent.toLowerCase();
+
+        if (title.includes(searchTerm) {
+          row.style.display = '';
+        } else if (author.includes(searchTerm)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      }
+    }
+</script>
+</body>
+</html>
